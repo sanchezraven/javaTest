@@ -21,13 +21,22 @@ public class App
         options.addArguments("--incognito");
 
         WebDriver driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
         driver.get("https://tmk:tmk@test-stock.tmk-group.com/");
-        Thread.sleep(10000);
+        driver.get("https://test-stock.tmk-group.com/");
+        Thread.sleep(7000);
 
         driver.findElement(By.xpath("//div[@class=\"header__aux\"]/ul/li/button")).click();
-        driver.findElement(By.xpath("//input[@id=\"form-auth-email\"]")).sendKeys("info@d-element.ru");
-        driver.findElement(By.xpath("//input[@id=\"form-auth-password\"]")).sendKeys("p4Tu|6l{Gg?p");
+        driver.findElement(By.xpath("//input[@id=\"form-auth-email\"]")).sendKeys("vav+2017@d-element.ru");
+        driver.findElement(By.xpath("//input[@id=\"form-auth-password\"]")).sendKeys("ybK~N@?vi|ba1");
+        driver.findElement(By.xpath("//button[@class=\"btn btn--full-width\"]")).submit();
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//div/ul/li/a[@href=\"/personal/\"]")).click();
+        Thread.sleep(500);
+        String profile = driver.findElement(By.xpath("//header/h1")).getText();
+        if (profile == "Профиль"){
+            System.out.println("Зашел");
+        }
         driver.quit();
     }
 }
