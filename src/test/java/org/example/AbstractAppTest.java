@@ -5,14 +5,12 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-
-import java.util.concurrent.TimeUnit;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public abstract class AbstractAppTest {
 
-    private static WebDriver driver;
+    static WebDriver webdriver;
+    static EventFiringWebDriver eventDriver;
 
     @BeforeAll
     static void init() {
@@ -20,23 +18,23 @@ public abstract class AbstractAppTest {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
         options.addArguments("--incognito");
-        driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
+
+        eventDriver = new EventFiringWebDriver(new ChromeDriver(options));
     }
 
     @BeforeEach
     void goTo() throws InterruptedException {
-        driver.get("https://tmk:tmk@test-stock.tmk-group.com/");
-        driver.get("https://test-stock.tmk-group.com/");
+        eventDriver.get("https://tmk:tmk@test-stock.tmk-group.com/");
+        eventDriver.get("https://test-stock.tmk-group.com/");
         Thread.sleep(7000);
     }
 
     @AfterAll
     static void close() {
-        driver.quit();
+        eventDriver.quit();
     }
 
-    public static WebDriver getDriver() {
-        return driver;
+    public WebDriver getWebDriver() {
+        return this.eventDriver;
     }
 }
